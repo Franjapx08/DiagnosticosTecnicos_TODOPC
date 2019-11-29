@@ -145,7 +145,7 @@ export default {
 
   methods: {
     clickRow(item) {
-      this.$router.push("pago-informacion/" + item.id);
+      /*  this.$router.push("pago-informacion/" + item.id); */
     }
   }
 };

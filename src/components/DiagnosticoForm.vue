@@ -8,10 +8,22 @@
             <v-form ref="form">
               <v-row class="mb-6">
                 <v-col>
-                  <v-text-field outlined v-model="form.fecha" label="Fecha de entrada" type="date"></v-text-field>
+                  <v-text-field
+                    outlined
+                    autocomplete="off"
+                    v-model="form.fecha"
+                    label="Fecha de entrada"
+                    type="date"
+                  ></v-text-field>
                 </v-col>
                 <v-col>
-                  <v-text-field outlined v-model="form.hora" label="Hora de entrada" type="time"></v-text-field>
+                  <v-text-field
+                    outlined
+                    autocomplete="off"
+                    v-model="form.hora"
+                    label="Hora de entrada"
+                    type="time"
+                  ></v-text-field>
                 </v-col>
               </v-row>
               <v-combobox
@@ -31,14 +43,23 @@
               <h3 style="margin-bottom: 20px;">Información del equipo</h3>
               <v-text-field
                 outlined
+                autocomplete="off"
                 v-model="form.tipoEquipo"
                 :maxlength="99"
                 label="Tipo de equipo"
                 type="text"
               ></v-text-field>
-              <v-text-field outlined v-model="form.marca" :maxlength="99" label="Marca" type="text"></v-text-field>
               <v-text-field
                 outlined
+                autocomplete="off"
+                v-model="form.marca"
+                :maxlength="99"
+                label="Marca"
+                type="text"
+              ></v-text-field>
+              <v-text-field
+                outlined
+                autocomplete="off"
                 v-model="form.modelo"
                 :maxlength="99"
                 label="Modelo"
@@ -46,6 +67,7 @@
               ></v-text-field>
               <v-text-field
                 outlined
+                autocomplete="off"
                 v-model="form.noSerie"
                 :maxlength="99"
                 label="Número de serie"
@@ -90,7 +112,7 @@
 </template>
 
 <script>
-import { agregarDiagnostico, getClientes, getTecnico } from "../utils/services";
+import { nuevoDiagnostico, getClientes, getTecnico } from "../utils/services";
 export default {
   name: "DiagnosticoForm",
   data() {
@@ -102,14 +124,12 @@ export default {
       form: {
         fecha: null,
         hora: null,
-        cliente: null,
-        tecnico: null,
-        tipoEquipo: null,
-        marca: null,
-        modelo: null,
-        noSerie: null,
-        falla: null,
-        accesorios: null,
+        tipoEquipo: "LAPTOP",
+        marca: "JP",
+        modelo: "IDEAPAD",
+        noSerie: "AAAA",
+        falla: "NO CARGA",
+        accesorios: "CARGADOR",
         fechaPrometida: null,
         horaPrometida: null
       },
@@ -178,9 +198,10 @@ export default {
         ///no es Objeto
         flag = 2;
         /* Error sleecione bien we */
+        alert(
+          "Alerta! \n" + "Favor de seleccioanr correctamente Cliente/Tecnico"
+        );
       }
-      console.log(flag);
-      console.log(this.comboCliente.id);
 
       this.loader = true;
       if (
@@ -188,11 +209,11 @@ export default {
         this.form.fecha &&
         this.form.tipoEquipo &&
         this.form.marca &&
-        this.form.modeo &&
+        this.form.modelo &&
         this.form.noSerie &&
         this.form.falla &&
         this.form.accesorios &&
-        this.fechaPrometida != null &&
+        this.form.fechaPrometida != null &&
         flag == 1
       ) {
         //si no faltan parametros
@@ -200,30 +221,22 @@ export default {
         //data = formulario enviar por post
         for (let k in this.form) {
           data.append(k, this.form[k]); //itera parametros
-          console.log(k + this.form[k]);
+          /*   console.log(k + this.form[k]); */
         }
 
         //adjuntar parametros metodo POST de:
-        //dataSends.append("cliente", this.comboCliente.id);
-        console.log(comboCliente.id);
-
-        agregarCliente(data)
-          .then(response => {
-            let r = response.data;
-            if (r.code == 1) {
-              //agregado
-              /*   this.$router.push("Clientes"); */
-              //console.log("Ok");
-            } else if (r.code == 2) {
+        data.append("tecnico", this.comboTecnico.id);
+        data.append("cliente", this.comboCliente.id);
+        nuevoDiagnostico(data)
+          .then(r => {
+            if (r.data.code == 1) {
+              this.$router.push({ name: "Home" });
             } else {
+              alert("Alerta! \n" + "Fallo en la conexión");
             }
-            this.loader = false;
           })
           .catch(error => {
-            this.errors = 3;
             console.error("Error:", error);
-            /* alert fallo */
-            this.loader = false;
           });
       } else {
         //faltan parametros

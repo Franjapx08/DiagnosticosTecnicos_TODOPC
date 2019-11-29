@@ -43,3 +43,8 @@ export const getClientes = () => {
 export const getTecnico = () => {
   return axios.post(domainApiVersion + "getTecnicos.php");
 };
+
+/* Nuevo diagnostico */
+export const nuevoDiagnostico = data => {
+  return axios.post(domainApiVersion + "agregarDiagnostico.php", data);
+};

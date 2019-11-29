@@ -168,12 +168,12 @@ export default {
       this.drawer = false;
     },
     clientes() {
-      this.$router.push({ name: "clientes" });
-      this.drawer = false;
+      /*     this.$router.push({ name: "clientes" });
+      this.drawer = false; */
     },
     nuevoCliente() {
-      this.$router.push({ name: "cliente" });
-      this.drawer = false;
+      /*   this.$router.push({ name: "cliente" });
+      this.drawer = false; */
     },
     logOut() {
       //cerrar sesion
