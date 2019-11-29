@@ -10,20 +10,30 @@
           height="6"
         ></v-progress-linear>
       </div>
-      <TablaProductos v-if="show" />
+      <DiagnosticoForm v-if="show" />
     </v-container>
   </v-app>
 </template>
 
 <script>
-import { isLogin } from "../utils/services";
-import TablaProductos from "../components/TableProductos";
-
+import { isLogin, isAuth } from "../utils/services";
+import DiagnosticoForm from "../components/DiagnosticoForm";
 export default {
+  name: "NuevoDiagnostico",
   components: {
-    TablaProductos
+    DiagnosticoForm
   },
-  data: () => ({ show: false, loaderWindows: true }),
+  data: () => ({
+    datos: {
+      id: 0,
+      nombre: 0,
+      correo: 0,
+      celular: 0,
+      tipoUser: 0
+    },
+    show: false,
+    loaderWindows: true
+  }),
   created() {
     isLogin()
       .then(r => {
@@ -37,8 +47,7 @@ export default {
       .catch(error => {
         console.error("Error:", error);
       });
-  },
-  methods: {}
+  }
 };
 </script>
 
